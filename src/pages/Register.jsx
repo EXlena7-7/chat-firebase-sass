@@ -1,10 +1,15 @@
 import React from 'react'
 import Add from "../img/addAvatar.png"
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../firebase';
+import { useState } from 'react';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { update } from 'firebase/database';
+import { doc, setDoc } from "firebase/firestore"; 
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const [err,setErr] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(e.target[0].value)
     const displayName = e.target[0].value;
@@ -12,20 +17,43 @@ const Register = () => {
     const password = e.target[2].value;
     const file = e.target[3].files[0];
 
- 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed up 
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    });
+    try{
+      const res =createUserWithEmailAndPassword(auth, email, password)
+      
+
+    // const storage = getStorage();
+    const storageRef = ref(storage, displayName);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+
+    (error) => {
+      setErr(true);
+    }, 
+    () => {
+
+      getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+        await updateProfile(res.user,{
+          displayName,
+          photoURL: downloadURL,
+        });
+        await update(doc(db, "users", res.user.uid),{
+          uid: res.user.uid,
+          displayName,
+          email,
+          photoURL: downloadURL,
+        });
+      });
     }
+  );
+
+
+
+    }catch(err){
+      setErr(true);
+    }
+    };
 
   return (
     <div className='formContainer'>
@@ -42,8 +70,10 @@ const Register = () => {
                 <span>Add an avatar</span>
             </label>
             <button>Sign Up</button>
+            {err && <span>Something went wrong</span>}
         </form>
         <p>You do have an account?</p>
+        
       </div>
     </div>
   )
