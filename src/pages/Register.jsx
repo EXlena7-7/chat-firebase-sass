@@ -18,10 +18,8 @@ const Register = () => {
     const file = e.target[3].files[0];
 
     try{
-      const res =createUserWithEmailAndPassword(auth, email, password)
+    const res = await createUserWithEmailAndPassword(auth, email, password)
       
-
-    // const storage = getStorage();
     const storageRef = ref(storage, displayName);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -34,11 +32,11 @@ const Register = () => {
     () => {
 
       getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-        await updateProfile(res.user,{
+        await updateProfile(res.user, {
           displayName,
           photoURL: downloadURL,
         });
-        await update(doc(db, "users", res.user.uid),{
+        await setDoc(doc(db, "users", res.user.uid),{
           uid: res.user.uid,
           displayName,
           email,
