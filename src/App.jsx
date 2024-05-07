@@ -2,18 +2,14 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import "./style.scss";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Routes,
-  Link,
-  BrowserRouter,
-} from "react-router-dom";
-
-
+import {createBrowserRouter,RouterProvider, Route,Routes,Link,BrowserRouter} from "react-router-dom";
+import { useContext } from "react";
+// import { AuthContext } from "./context/AuthContext";
 
 function App() {
+  // const {currentUser} = useContext(AuthContext);
+  // console.log(currentUser);
+  
   return (
     <BrowserRouter>
     <Routes>
