@@ -1,26 +1,32 @@
-// import { createContext, useEffect, useState } from "react";
-// import { auth } from "../firebase";
-// import { onAuthStateChanged } from "firebase/auth";
+import React, { createContext, useState, useEffect } from 'react';
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
-// export const AuthContext = createContext();
 
-// export const AuthContextProvider = ({ children }) => {
-//   const [currentUser, setCurrentUser] = useState({});
+const AuthContext = createContext();
 
-//   useEffect(() => {
-//     const unsub = onAuthStateChanged(auth, (user) => {
-//       setCurrentUser(user);
-//       console.log(user);
-//     });
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState({});
 
-//     return () => {
-//       unsub();
-//     };
-//   }, []);
+  // lógica para establecer el usuario actual
+  // cargar el usuario desde el almacenamiento local o una API
 
-//   return (
-//     <AuthContext.Provider value={{ currentUser }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      console.log(user);
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContext;

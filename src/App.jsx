@@ -1,26 +1,25 @@
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+// App.js
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from './context/AuthContext'; // Asegúrate de importar AuthProvider
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import "./style.scss";
-import {createBrowserRouter,RouterProvider, Route,Routes,Link,BrowserRouter} from "react-router-dom";
-import { useContext } from "react";
-// import { AuthContext } from "./context/AuthContext";
+
 
 function App() {
-  // const {currentUser} = useContext(AuthContext);
-  // console.log(currentUser);
-  
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="">
-        <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Route>
-    </Routes>
-    </BrowserRouter>
-  )
+    <AuthProvider> {/* Envuelve tu aplicación con AuthProvider */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App;
