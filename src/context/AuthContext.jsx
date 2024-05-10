@@ -28,5 +28,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;
+// Cambia esta línea para exportar AuthContext como un export nombrado
+export { AuthContext };
