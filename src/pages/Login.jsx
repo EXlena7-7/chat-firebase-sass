@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Add from "../img/addAvatar.png"
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const [err, setErr] = useState(false);

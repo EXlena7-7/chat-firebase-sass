@@ -18,7 +18,7 @@ function App() {
   };
 
   return (
-    <AuthProvider> {/* Asegúrate de que AuthProvider envuelva a ProtectedRoute */}
+    <AuthProvider> 
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
