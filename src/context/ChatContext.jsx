@@ -1,10 +1,12 @@
-import { createContext, useState, useEffect, useContext, useReducer } from 'react';
-import { auth } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { createContext, useContext, useState, useEffect, useReducer } from 'react';
+import { AuthContext } from "./AuthContext";
 
 
 export const ChatContext = createContext();
-export const ChatProvider = ({ children }) => {
+
+
+export const ChatContextProvider = ({ children }) => {
+  const {currentUser} = useContext(AuthContext);
     const INITIAL_STATE = {
     chatId: "null",
     user:{}

@@ -36,7 +36,7 @@ const Chats = () => {
       </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Chats
+export default Chats;
